@@ -1,5 +1,9 @@
 // Copyright 2014-2017 Oxford University Innovation Limited and the authors of InfiniTAM
 
+#include <memory>
+
+#include<cstring>
+
 #include "RealSense2Engine.h"
 
 #include "../ORUtils/FileUtils.h"
@@ -51,7 +55,7 @@ RealSense2Engine::RealSense2Engine(const char *calibFilename, bool alignColourWi
 	this->imageSize_d = requested_imageSize_d;
 	this->imageSize_rgb = requested_imageSize_rgb;
 	
-	this->ctx = std::unique_ptr<rs2::context>(new rs2::context());
+	this->ctx = std::shared_ptr<rs2::context>(new rs2::context());
 	
 	rs2::device_list availableDevices = ctx->query_devices();
 	
@@ -62,11 +66,11 @@ RealSense2Engine::RealSense2Engine(const char *calibFilename, bool alignColourWi
 		return;
 	}
 	
-	this->device = std::unique_ptr<rs2::device>(new rs2::device(availableDevices.front()));
+	this->device = std::shared_ptr<rs2::device>(new rs2::device(availableDevices.front()));
 	
 	print_device_information(*device);
 	
-	this->pipe = std::unique_ptr<rs2::pipeline>(new rs2::pipeline(*ctx));
+	this->pipe = std::shared_ptr<rs2::pipeline>(new rs2::pipeline(*ctx));
 	
 	rs2::config config;
 	config.enable_stream(RS2_STREAM_DEPTH, imageSize_d.x, imageSize_d.y, RS2_FORMAT_Z16, 30);

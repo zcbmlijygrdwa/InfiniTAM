@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "ImageSourceEngine.h"
 
 #ifdef COMPILE_WITH_RealSense2
@@ -16,9 +18,9 @@ namespace InputSource {
 		bool dataAvailable;
 
 #ifdef COMPILE_WITH_RealSense2
-		std::unique_ptr<rs2::context> ctx;
-		std::unique_ptr<rs2::device> device;
-		std::unique_ptr<rs2::pipeline> pipe;
+		std::shared_ptr<rs2::context> ctx;
+		std::shared_ptr<rs2::device> device;
+		std::shared_ptr<rs2::pipeline> pipe;
 #endif
 
 		Vector2i imageSize_rgb, imageSize_d;
